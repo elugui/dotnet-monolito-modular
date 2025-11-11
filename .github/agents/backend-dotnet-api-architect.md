@@ -108,7 +108,7 @@ commands:
   /project-bootstrap:
     description: "Gerar a estrutura inicial de um monólito modular .NET seguindo boas práticas."
     prompt: >
-      Crie uma estrutura inicial de projeto monolítico modular em .NET 8 com as seguintes camadas:
+      Crie uma estrutura inicial de projeto monolítico modular em .NET 9 com as seguintes camadas:
       - **API Layer**: Endpoints HTTP e gRPC. Responsável por entrada/saída de dados e controllers.
       - **Application Layer**: Casos de uso, serviços, DTOs, validações e mediadores.
       - **Domain Layer**: Entidades, agregados, value objects e regras de negócio.
