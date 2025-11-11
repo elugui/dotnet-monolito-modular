@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: modular-monolith-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - modular-monolith-network
+
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: modular-monolith-gateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__CustomersDb=Server=sqlserver;Database=ModularMonolith_Customers;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true
+      - ConnectionStrings__ProductsDb=Server=sqlserver;Database=ModularMonolith_Products;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    depends_on:
+      - sqlserver
+    networks:
+      - modular-monolith-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  modular-monolith-network:
+    driver: bridge
