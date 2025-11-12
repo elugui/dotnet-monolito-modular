@@ -1,4 +1,5 @@
 using MonolitoModular.Slices.Products.Infrastructure;
+using MonolitoModular.Slices.Users.Grpc;
 
 namespace MonolitoModular.Slices.Products;
 
@@ -17,5 +18,12 @@ public class ProductsModule : ISliceModule
 
         // Register gRPC services
         services.AddGrpc();
+
+        // Register gRPC client for Users slice (inter-slice communication)
+        services.AddGrpcClient<UsersService.UsersServiceClient>(options =>
+        {
+            // In-process communication - same host
+            options.Address = new Uri(configuration["GrpcSettings:UsersServiceUrl"] ?? "http://localhost:5000");
+        });
     }
 }

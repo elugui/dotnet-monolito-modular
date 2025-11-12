@@ -1,6 +1,8 @@
 using MonolitoModular.Shared.Contracts;
 using MonolitoModular.Slices.Users;
 using MonolitoModular.Slices.Products;
+using MonolitoModular.Slices.Users.Grpc;
+using MonolitoModular.Slices.Products.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,5 +37,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map gRPC services for inter-slice communication
+app.MapGrpcService<UsersGrpcService>();
+app.MapGrpcService<ProductsGrpcService>();
 
 app.Run();

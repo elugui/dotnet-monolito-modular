@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+option csharp_namespace = "MonolitoModular.Slices.Users.Grpc";
+
+package monolitomodular.slices.users.v1;
+
+// Service definition for Users management
+service UsersService {
+  // Get a user by ID
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  
+  // Get a user by email
+  rpc GetUserByEmail (GetUserByEmailRequest) returns (GetUserResponse);
+  
+  // Check if a user exists
+  rpc UserExists (UserExistsRequest) returns (UserExistsResponse);
+  
+  // List users with pagination
+  rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
+  
+  // Validate user (for inter-slice validation)
+  rpc ValidateUser (ValidateUserRequest) returns (ValidateUserResponse);
+}
+
+// Request to get a user by ID
+message GetUserRequest {
+  string id = 1;
+}
+
+// Request to get a user by email
+message GetUserByEmailRequest {
+  string email = 1;
+}
+
+// Request to check if user exists
+message UserExistsRequest {
+  string id = 1;
+}
+
+// Response for user existence check
+message UserExistsResponse {
+  bool exists = 1;
+}
+
+// Request to validate a user
+message ValidateUserRequest {
+  string id = 1;
+}
+
+// Response for user validation
+message ValidateUserResponse {
+  bool is_valid = 1;
+  string reason = 2; // Optional: reason if not valid
+}
+
+// Request to list users with pagination
+message ListUsersRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  bool active_only = 3;
+}
+
+// Response with user list
+message ListUsersResponse {
+  repeated UserDto users = 1;
+  int32 total_count = 2;
+  int32 page_number = 3;
+  int32 page_size = 4;
+}
+
+// Response with single user data
+message GetUserResponse {
+  UserDto user = 1;
+}
+
+// User Data Transfer Object
+message UserDto {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  bool is_active = 4;
+  string created_at = 5;
+}
