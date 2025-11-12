@@ -61,7 +61,7 @@ public class UsersGrpcService : UsersService.UsersServiceBase
     {
         try
         {
-            _logger.LogInformation("gRPC GetUserByEmail called for email: {Email}", request.Email);
+            _logger.LogInformation("gRPC GetUserByEmail called");
 
             if (string.IsNullOrWhiteSpace(request.Email))
             {
@@ -87,7 +87,7 @@ public class UsersGrpcService : UsersService.UsersServiceBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting user by email {Email}", request.Email);
+            _logger.LogError(ex, "Error getting user by email");
             throw new RpcException(new Status(StatusCode.Internal, "An error occurred while getting user by email"));
         }
     }
