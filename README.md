@@ -167,23 +167,60 @@ dotnet new classlib -n MonolitoModular.Slices.NewSlice
 
 Para comunicação entre slices, use **gRPC**:
 
-1. Defina um arquivo `.proto` no slice servidor
-2. Implemente o serviço gRPC
-3. No slice cliente, adicione referência ao cliente gRPC
-4. Use o cliente para chamadas inter-slice
+### Serviços gRPC Implementados
 
-Exemplo:
+✅ **UsersService** - Gerenciamento de usuários
+- `GetUser` - Obter usuário por ID
+- `GetUserByEmail` - Buscar por email
+- `ValidateUser` - Validar usuário ativo
+- `UserExists` - Verificar existência
+- `ListUsers` - Listar com paginação
+
+✅ **ProductsService** - Gerenciamento de produtos
+- `GetProduct` - Obter produto por ID
+- `CheckAvailability` - Verificar estoque
+- `ReserveStock` - Reservar itens
+- `ListProducts` - Listar com filtros
+
+### Exemplo de Uso
+
 ```csharp
-// No slice Users
+// No slice servidor (Users)
 public class UsersGrpcService : UsersService.UsersServiceBase
 {
-    // Implementação
+    public override async Task<GetUserResponse> GetUser(
+        GetUserRequest request, 
+        ServerCallContext context)
+    {
+        var user = await _mediator.Send(new GetUserQuery(userId));
+        return new GetUserResponse { User = MapToDto(user) };
+    }
 }
 
-// Em outro slice
-var client = new UsersService.UsersServiceClient(channel);
-var response = await client.GetUserAsync(new GetUserRequest { Id = userId });
+// No slice cliente (Products)
+public class CreateProductHandler
+{
+    private readonly UsersService.UsersServiceClient _usersClient;
+
+    public async Task<Guid> Handle(CreateProductCommand request)
+    {
+        // Validar usuário via gRPC
+        var validation = await _usersClient.ValidateUserAsync(
+            new ValidateUserRequest { Id = request.UserId });
+        
+        if (!validation.IsValid)
+            throw new InvalidOperationException(validation.Reason);
+        
+        // Criar produto...
+    }
+}
 ```
+
+### Documentação Completa
+
+- 📘 [Análise e Estratégia gRPC](docs/GRPC_ANALYSIS.md)
+- 📗 [Guia de Uso gRPC](docs/GRPC_USAGE_GUIDE.md)
+- 📙 [Como Adicionar Serviço gRPC](docs/ADDING_GRPC_SERVICE.md)
 
 ## 📈 Benefícios desta Arquitetura
 

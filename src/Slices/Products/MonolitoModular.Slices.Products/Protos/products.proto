@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+option csharp_namespace = "MonolitoModular.Slices.Products.Grpc";
+
+package monolitomodular.slices.products.v1;
+
+// Service definition for Products management
+service ProductsService {
+  // Get a product by ID
+  rpc GetProduct (GetProductRequest) returns (GetProductResponse);
+  
+  // Check if a product is available
+  rpc CheckAvailability (CheckAvailabilityRequest) returns (CheckAvailabilityResponse);
+  
+  // List products with filters
+  rpc ListProducts (ListProductsRequest) returns (ListProductsResponse);
+  
+  // Reserve product stock (for inter-slice operations)
+  rpc ReserveStock (ReserveStockRequest) returns (ReserveStockResponse);
+}
+
+// Request to get a product by ID
+message GetProductRequest {
+  string id = 1;
+}
+
+// Response with product data
+message GetProductResponse {
+  ProductDto product = 1;
+}
+
+// Request to check product availability
+message CheckAvailabilityRequest {
+  string id = 1;
+  int32 quantity = 2;
+}
+
+// Response for availability check
+message CheckAvailabilityResponse {
+  bool is_available = 1;
+  int32 available_quantity = 2;
+}
+
+// Request to reserve stock
+message ReserveStockRequest {
+  string product_id = 1;
+  int32 quantity = 2;
+  string reservation_id = 3; // For idempotency
+}
+
+// Response for stock reservation
+message ReserveStockResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Request to list products
+message ListProductsRequest {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  bool available_only = 3;
+  double min_price = 4;
+  double max_price = 5;
+}
+
+// Response with product list
+message ListProductsResponse {
+  repeated ProductDto products = 1;
+  int32 total_count = 2;
+  int32 page_number = 3;
+  int32 page_size = 4;
+}
+
+// Product Data Transfer Object
+message ProductDto {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stock = 5;
+  bool is_available = 6;
+  string created_at = 7;
+}
