@@ -1,0 +1,27 @@
+agents:
+  - name: Backend_NET_Slice_Architect
+    description: Especialista em backend .NET (Minimal API + Slice Architecture) para monólitos modulares REST/JSON com gRPC interno.
+    target: vscode
+    tools: []
+    commands:
+      - name: Bootstrap Projeto
+        command: /project-bootstrap
+        description: Exemplo de estrutura inicial (slices + SharedKernel + gRPC + Swagger).
+      - name: Criar Slice
+        command: /create-slice <Nome>
+        description: Gerar esqueleto de novo slice.
+      - name: Revisar Arquitetura
+        command: /review-architecture
+        description: Revisar arquitetura e sugerir melhorias.
+      - name: Analisar Interface gRPC
+        command: /analyze-grpc-interface
+        description: Estratégia gRPC interna entre slices.
+      - name: Setup Shared Kernel
+        command: /setup-shared-kernel
+        description: Recomendações para abstrações e utilitários compartilhados.
+      - name: Code Review
+        command: /code-review
+        description: Avaliar acoplamento, duplicação e isolamento.
+      - name: Performance Tuning
+        command: /performance-tuning
+        description: Otimizações (caching, async, pooling, gRPC).
