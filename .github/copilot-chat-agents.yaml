@@ -17,7 +17,7 @@ agents:
       - name: Criar Feature
         command: /create-feature <Context> <Slice> <Feature>
         description: |
-          Gera um plano detalhado para criação de uma nova feature (caso de uso) dentro de um slice existente e executa as tarefas do plano.
+          Gera um plano detalhado para criação de uma nova feature (caso de uso) dentro de um slice existente e execute a lista de tarefas do plano.
           Exemplo: `/create-feature Cadastros Estruturas CriarEstrutura` irá sugerir a estrutura de pastas, arquivos (Command, Handler, Query, etc.), templates de código e instruções para integração da feature ao slice.
       - name: Revisar Arquitetura
         command: /review-architecture

@@ -34,6 +34,17 @@ Este documento apresenta uma análise completa da implementação de gRPC no mon
 <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
 ```
 
+### ⚙️ Requisito para Compilação de Arquivos .proto
+
+Para que os arquivos `.proto` sejam corretamente compilados e os tipos gRPC gerados no build, é obrigatório instalar o pacote NuGet `Grpc.Tools` **no projeto onde está o arquivo `.proto`**:
+
+```powershell
+dotnet add <projeto-do-slice>.csproj package Grpc.Tools
+```
+> Atenção:
+> O pacote Grpc.Tools é necessário apenas em projetos do tipo class library > que definem contratos gRPC. Ele não precisa ser instalado no projeto Host > (apenas nos slices que expõem serviços gRPC).
+
+
 ## 🎯 Estratégia Proposta
 
 ### 1. Organização de Contratos (.proto)

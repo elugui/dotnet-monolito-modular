@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\Shared\MonolitoModular.Shared.Infrastructure\MonolitoModular.Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Slices\Users\MonolitoModular.Slices.Users\MonolitoModular.Slices.Users.csproj" />
     <ProjectReference Include="..\..\Slices\Products\MonolitoModular.Slices.Products\MonolitoModular.Slices.Products.csproj" />
+    <ProjectReference Include="..\..\Slices\Cadastrados\Estruturas\MonolitoModular.Slices.Cadastrados.Estruturas\MonolitoModular.Slices.Cadastrados.Estruturas.csproj" />
   </ItemGroup>
 
 </Project>

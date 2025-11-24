@@ -1,4 +1,4 @@
-using MonolitoModular.Slices.Estruturas.Infrastructure;
+using MonolitoModular.Slices.Cadastrados.Estruturas.Infrastructure;
 // Exemplo: usando cliente gRPC de outro slice
 // using MonolitoModular.Slices.Users.Grpc;
 
@@ -8,12 +8,11 @@ public class EstruturasModule : ISliceModule
 {
     public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {        
-        // Configuração do DbContext (descomente e ajuste conforme necessário)
-        // services.AddDbContext<EstruturasDbContext>(options =>
-        //    options.UseSqlServer(
-        //        configuration.GetConnectionString("DefaultConnection"),
-        //        b => b.MigrationsAssembly("MonolitoModular.Host")));
-        
+        services.AddDbContext<EstruturasDbContext>(options =>
+            options.UseSqlServer(
+                configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly("MonolitoModular.Host")));
+
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(EstruturasModule).Assembly));
 
         services.AddGrpc();

@@ -3,6 +3,7 @@ using MonolitoModular.Slices.Users;
 using MonolitoModular.Slices.Products;
 using MonolitoModular.Slices.Users.Grpc;
 using MonolitoModular.Slices.Products.Grpc;
+using MonolitoModular.Slices.Cadastrados.Estruturas.Grpc;
 using Scalar.AspNetCore;
 using Microsoft.OpenApi.Models;
 
@@ -82,5 +83,6 @@ app.MapControllers();
 // Map gRPC services for inter-slice communication
 app.MapGrpcService<UsersGrpcService>();
 app.MapGrpcService<ProductsGrpcService>();
+app.MapGrpcService<EstruturasGrpcService>();
 
 app.Run();

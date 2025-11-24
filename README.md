@@ -232,6 +232,25 @@ public class CreateProductHandler
 ✅ **Isolamento**: Mudanças em um slice não afetam outros
 ✅ **Deploy único**: Benefícios de um monólito com organização de microsserviços
 
+## Lista de melhorias
+
+```mermaid
+kanban
+    Product Backlog
+      Immplementar Repositório Genérico c/ UnitOfWork      
+      Implementar autenticação, validação token JWT
+      Avalir uso do AutoMapper
+      Segregar o mapeamento da entidade na infraestrutura      
+    Planning
+
+    In Progress        
+
+    Test
+    
+    Done
+```
+
+
 ## 📝 License
 
 MIT License - veja o arquivo LICENSE para detalhes

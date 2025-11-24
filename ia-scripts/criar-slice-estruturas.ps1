@@ -27,7 +27,7 @@ global using MonolitoModular.Shared.Infrastructure;
 
 # Crie o Module.cs (padrão completo)
 $moduleClass = @"
-// using MonolitoModular.Slices.$Slice.Infrastructure; 
+// using MonolitoModular.Slices.$Contexto.$Slice.Infrastructure; 
 // Exemplo: usando cliente gRPC de outro slice
 // using MonolitoModular.Slices.Users.Grpc;
 

@@ -1,11 +1,21 @@
-<Project Sdk='Microsoft.NET.Sdk'>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include='..\..\..\..\Shared\MonolitoModular.Shared.Contracts\MonolitoModular.Shared.Contracts.csproj' />
-    <ProjectReference Include='..\..\..\..\Shared\MonolitoModular.Shared.Infrastructure\MonolitoModular.Shared.Infrastructure.csproj' />
+    <ProjectReference Include="..\..\..\..\Shared\MonolitoModular.Shared.Contracts\MonolitoModular.Shared.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\Shared\MonolitoModular.Shared.Infrastructure\MonolitoModular.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos\estruturas.proto" GrpcServices="Server" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.76.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

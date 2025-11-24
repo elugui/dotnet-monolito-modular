@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "MonolitoModular.Slices.Cadastrados.Estruturas.Grpc";
+
+package monolitomodular.slices.cadastrados.estruturas.v1;
+
+service EstruturasService {
+  rpc GetEstrutura (GetEstruturaRequest) returns (GetEstruturaResponse);
+}
+
+message GetEstruturaRequest {
+  string id = 1;
+}
+
+message GetEstruturaResponse {
+  EstruturaDto estrutura = 1;
+}
+
+message EstruturaDto {
+  string id = 1;
+  string nome = 2;
+  string descricao = 3;
+}
