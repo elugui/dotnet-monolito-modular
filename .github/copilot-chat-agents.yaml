@@ -8,8 +8,12 @@ agents:
         command: /project-bootstrap
         description: Exemplo de estrutura inicial (slices + SharedKernel + gRPC + Swagger).
       - name: Criar Slice
-        command: /create-slice <Nome>
-        description: Gerar esqueleto de novo slice.
+        command: /create-slice <Context> <Slice>
+        description: |
+          Gera a estrutura de um novo slice.
+          **Execute manualmente:**
+          `./ia-scripts/criar-slice-estruturas.ps1 -Contexto <Context> -Slice <Slice>`
+          Exemplo: `/create-slice Cadastros Estruturas` irá sugerir a execução do script PowerShell para criar a estrutura do slice.
       - name: Revisar Arquitetura
         command: /review-architecture
         description: Revisar arquitetura e sugerir melhorias.
