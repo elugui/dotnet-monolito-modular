@@ -14,6 +14,11 @@ agents:
           **Execute manualmente:**
           `./ia-scripts/criar-slice-estruturas.ps1 -Contexto <Context> -Slice <Slice>`
           Exemplo: `/create-slice Cadastros Estruturas` irá sugerir a execução do script PowerShell para criar a estrutura do slice.
+      - name: Criar Feature
+        command: /create-feature <Context> <Slice> <Feature>
+        description: |
+          Gera um plano detalhado para criação de uma nova feature (caso de uso) dentro de um slice existente e executa as tarefas do plano.
+          Exemplo: `/create-feature Cadastros Estruturas CriarEstrutura` irá sugerir a estrutura de pastas, arquivos (Command, Handler, Query, etc.), templates de código e instruções para integração da feature ao slice.
       - name: Revisar Arquitetura
         command: /review-architecture
         description: Revisar arquitetura e sugerir melhorias.

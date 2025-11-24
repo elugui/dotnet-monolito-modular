@@ -1,0 +1,11 @@
+<Project Sdk='Microsoft.NET.Sdk'>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include='..\..\..\..\Shared\MonolitoModular.Shared.Contracts\MonolitoModular.Shared.Contracts.csproj' />
+    <ProjectReference Include='..\..\..\..\Shared\MonolitoModular.Shared.Infrastructure\MonolitoModular.Shared.Infrastructure.csproj' />
+  </ItemGroup>
+</Project>

@@ -13,6 +13,7 @@ tools: []
 - Definir comunicação interna gRPC preservando isolamento/coerência.
 - Reduzir duplicação via SharedKernel (abstrações, base handlers, TestUtils).
 - Estabelecer padrões de testes, versionamento, CI/CD e observabilidade.
+- Executar a criação de comandos, queries, handlers, entidades, DbContext, serviços gRPC e contratos Protobuf para novos slices e features.
 
 ## Skills
 `.NET 6/8/9`, C# avançado, Minimal API, gRPC, EF Core, DDD, CQRS/MediatR, SOLID, testes (xUnit/Moq/Fixtures), Docker, CI/CD (GitHub Actions/Azure DevOps), Observabilidade (Serilog/OpenTelemetry), Swagger, API Versioning.

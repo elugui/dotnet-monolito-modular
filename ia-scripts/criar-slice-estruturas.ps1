@@ -25,32 +25,50 @@ global using MonolitoModular.Shared.Contracts;
 global using MonolitoModular.Shared.Infrastructure;
 "@ | Set-Content "$root\GlobalUsings.cs"
 
-# Crie o Module.cs
+# Crie o Module.cs (padrão completo)
 $moduleClass = @"
+// using MonolitoModular.Slices.$Slice.Infrastructure; 
+// Exemplo: usando cliente gRPC de outro slice
+// using MonolitoModular.Slices.Users.Grpc;
+
 namespace MonolitoModular.Slices.$Contexto.$Slice;
 
-public static class ${Slice}Module
+public class ${Slice}Module : ISliceModule
 {
-    public static void Register${Slice}Slice(this IEndpointRouteBuilder endpoints)
-    {
-        // Mapear endpoints do slice aqui
+    public void RegisterServices(IServiceCollection services, IConfiguration configuration)
+    {        
+        // Configuração do DbContext (descomente e ajuste conforme necessário)
+        // services.AddDbContext<${Slice}DbContext>(options =>
+        //    options.UseSqlServer(
+        //        configuration.GetConnectionString("DefaultConnection"),
+        //        b => b.MigrationsAssembly("MonolitoModular.Host")));
+        
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(${Slice}Module).Assembly));
+
+        services.AddGrpc();
+
+        // Exemplo: usando cliente gRPC de outro slice
+        // services.AddGrpcClient<UsersService.UsersServiceClient>(options =>
+        // {
+        //    options.Address = new Uri(configuration["GrpcSettings:UsersServiceUrl"] ?? "http://localhost:5000");
+        // });
     }
 }
 "@
 $moduleFile = "$root\${Slice}Module.cs"
 $moduleClass | Set-Content $moduleFile
 
-# Crie o .csproj
+# Crie o .csproj (corrigido: aspas simples)
 @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project Sdk='Microsoft.NET.Sdk'>
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Shared\MonolitoModular.Shared.Contracts\MonolitoModular.Shared.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\..\Shared\MonolitoModular.Shared.Infrastructure\MonolitoModular.Shared.Infrastructure.csproj" />
+    <ProjectReference Include='..\..\..\..\Shared\MonolitoModular.Shared.Contracts\MonolitoModular.Shared.Contracts.csproj' />
+    <ProjectReference Include='..\..\..\..\Shared\MonolitoModular.Shared.Infrastructure\MonolitoModular.Shared.Infrastructure.csproj' />
   </ItemGroup>
 </Project>
 "@ | Set-Content "$root\MonolitoModular.Slices.$Contexto.$Slice.csproj"
