@@ -41,6 +41,8 @@ namespace MonolitoModular.Slices.Products.Api
                 new CreateProductCommand(request.Name, request.Description, request.Price, request.Stock));
             return CreatedAtAction(nameof(GetById), new { id = productId }, new { id = productId });
         }
+
+
     }
 
     public record CreateProductRequest(string Name, string Description, decimal Price, int Stock);

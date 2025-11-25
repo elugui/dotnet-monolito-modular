@@ -10,7 +10,7 @@ public class UsersModule : ISliceModule
         services.AddDbContext<UsersDbContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("MonolitoModular.Host")));
+                b => b.MigrationsAssembly("MonolitoModular.Slices.Users")));
 
         // Register MediatR handlers
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UsersModule).Assembly));

@@ -225,10 +225,32 @@ The project includes guides for:
 ## 🔄 Next Steps for Development
 
 1. **Database Migrations**
-   ```bash
-   dotnet ef migrations add InitialCreate --project src/Host/MonolitoModular.Host
-   dotnet ef database update --project src/Host/MonolitoModular.Host
-   ```
+
+- Instale a ferramenta dotnet-ef globalmente:
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+- Gerar migration: 
+
+```bash
+dotnet ef migrations add InitialCreate --project src/Slices/Users/MonolitoModular.Slices.Users/MonolitoModular.Slices.Users.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context UsersDbContext --output-dir Migrations
+
+dotnet ef migrations add InitialCreate --project src/Slices/Products/MonolitoModular.Slices.Products/MonolitoModular.Slices.Products.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context ProductsDbContext --output-dir Migrations 
+```
+
+- Aplicar migrations:
+
+```bash
+dotnet ef database update --project src/Slices/Users/MonolitoModular.Slices.Users/MonolitoModular.Slices.Users.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context UsersDbContext
+```
+
+- Script idempotent
+
+```bash
+dotnet ef migrations script --project src/Slices/Products/MonolitoModular.Slices.Products/MonolitoModular.Slices.Products.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context ProductsDbContext --idempotent -o src/Slices/Products/MonolitoModular.Slices.Products/Scripts/Products_InitialCreate.sql
+```
 
 2. **Add Authentication**
    - Implement JWT authentication

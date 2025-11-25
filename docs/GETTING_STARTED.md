@@ -64,7 +64,7 @@ A API estará disponível em:
 
 **Criar um usuário:**
 ```bash
-curl -X POST https://localhost:5001/api/users \
+curl -X POST https://localhost:5033/api/users \
   -H "Content-Type: application/json" \
   -d '{"name":"João Silva","email":"joao@example.com"}'
 ```
@@ -90,7 +90,10 @@ curl https://localhost:5001/api/products
 
 Acesse a documentação OpenAPI (em desenvolvimento):
 ```
-https://localhost:5001/openapi/v1.json
+https://localhost:5033/openapi/v1.json
+```
+```
+https://localhost:5033/openapi/v1.json
 ```
 
 ## Executar com Docker
@@ -101,7 +104,7 @@ Para executar toda a aplicação em containers:
 docker-compose up --build
 ```
 
-A API estará disponível em `http://localhost:5000`
+A API estará disponível em `http://localhost:5033`
 
 ## Estrutura de Diretórios
 

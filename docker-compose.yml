@@ -1,16 +1,13 @@
-version: '3.8'
-
 services:
   api:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:8080"
-      - "5001:8081"
+      - "5033:5033"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MonolitoModular;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MonolitoModular;User Id=sa;Password=Upper@2025;TrustServerCertificate=True
     depends_on:
       - sqlserver
     networks:
@@ -18,18 +15,26 @@ services:
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrong@Passw0rd
+    environment:        
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: Upper@2025
+      MSSQL_PID: Developer          
+      MSSQL_TCP_PORT: 1433          
     ports:
       - "1433:1433"
     volumes:
-      - sqlserver-data:/var/opt/mssql
+      - sqlserver-data:/var/opt/mssql     
     networks:
       - monolito-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Upper@2025" -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
-  sqlserver-data:
+  sqlserver-data: 
 
 networks:
   monolito-network:

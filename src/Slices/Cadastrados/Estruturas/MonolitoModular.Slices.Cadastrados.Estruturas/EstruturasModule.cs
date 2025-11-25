@@ -11,7 +11,7 @@ public class EstruturasModule : ISliceModule
         services.AddDbContext<EstruturasDbContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("MonolitoModular.Host")));
+                b => b.MigrationsAssembly("MonolitoModular.Slices.Cadastrados.Estruturas")));
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(EstruturasModule).Assembly));
 

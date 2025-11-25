@@ -11,7 +11,7 @@ public class ProductsModule : ISliceModule
         services.AddDbContext<ProductsDbContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("MonolitoModular.Host")));
+                b => b.MigrationsAssembly("MonolitoModular.Slices.Products")));
 
         // Register MediatR handlers
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ProductsModule).Assembly));
