@@ -88,8 +88,8 @@ A API estará disponível em `http://localhost:5000`
 ## 📚 Documentação da API
 
 Após iniciar a aplicação, acesse:
-- Swagger UI: `https://localhost:5001/swagger` (em desenvolvimento)
-- OpenAPI: `https://localhost:5001/openapi/v1.json`
+- OpenAPI: `http://localhost:5033/openapi/v1.json`
+- ScalarAPI: `http://localhost:5033/scalar/v1`
 
 ### Endpoints Disponíveis
 
