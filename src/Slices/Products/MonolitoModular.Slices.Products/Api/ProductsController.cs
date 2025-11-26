@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MonolitoModular.Slices.Products.Features.CreateProduct;
+using MonolitoModular.Slices.Products.Features.CreateProductWithUserValidation;
 using MonolitoModular.Slices.Products.Features.GetProduct;
 using MonolitoModular.Slices.Products.Features.ListProducts;
 
@@ -35,15 +35,26 @@ namespace MonolitoModular.Slices.Products.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateProductRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateProductWithUserValidationRequest request)
         {
             var productId = await _mediator.Send(
-                new CreateProductCommand(request.Name, request.Description, request.Price, request.Stock));
+                new CreateProductWithUserValidationCommand(
+                    request.Name,
+                    request.Description,
+                    request.Price,
+                    request.Stock,
+                    request.CreatedByUserId
+                )
+            );
             return CreatedAtAction(nameof(GetById), new { id = productId }, new { id = productId });
         }
-
-
     }
 
-    public record CreateProductRequest(string Name, string Description, decimal Price, int Stock);
+    public record CreateProductWithUserValidationRequest(
+        string Name,
+        string Description,
+        decimal Price,
+        int Stock,
+        string CreatedByUserId
+    );
 }

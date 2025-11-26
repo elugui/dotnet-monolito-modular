@@ -9,6 +9,13 @@ using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// configure Kestrel to listen on specific ports for HTTP/1.1 and HTTP/2 (gRPC)
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5033, o => o.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1);
+    options.ListenAnyIP(5000, o => o.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2);
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 

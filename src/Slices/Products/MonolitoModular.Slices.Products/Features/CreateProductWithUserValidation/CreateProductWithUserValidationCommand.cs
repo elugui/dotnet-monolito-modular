@@ -36,7 +36,7 @@ public class CreateProductWithUserValidationHandler : IRequestHandler<CreateProd
     {
         _logger.LogInformation("Creating product with user validation. User ID: {UserId}", request.CreatedByUserId);
 
-        // INTER-SLICE COMMUNICATION: Validate user via gRPC
+        // COMUNICAÇÃO ENTRE SLICES: Validar usuário via gRPC
         try
         {
             var validationResponse = await _usersClient.ValidateUserAsync(
