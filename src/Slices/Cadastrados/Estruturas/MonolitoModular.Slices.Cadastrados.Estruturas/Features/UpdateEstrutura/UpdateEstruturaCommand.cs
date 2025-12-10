@@ -1,8 +1,10 @@
 using System;
+using MediatR;
+using MonolitoModular.Slices.Cadastrados.Estruturas.Domain;
 
-namespace MonolitoModular.Slices.Cadastrados.Estruturas.Domain
+namespace MonolitoModular.Slices.Cadastrados.Estruturas.Features.UpdateEstrutura
 {
-    public class Estrutura
+    public class UpdateEstruturaCommand : IRequest<bool>
     {
         public Guid Codigo { get; set; }
         public string Nome { get; set; }

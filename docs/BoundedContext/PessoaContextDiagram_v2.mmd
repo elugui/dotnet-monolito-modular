@@ -1,0 +1,107 @@
+---
+title: Pessoa Context Diagram
+config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR
+
+    namespace Cadastros.Pessoas {
+
+        class Pessoa {
+            decimal Codigo
+            decimal? CodigoAtributo
+            string NumeroDocumento
+            string Nome
+            string ImagemUrl
+            string Identificador
+            decimal? CodigoEndereco
+            decimal CodigoTipo
+            decimal CodigoEtapa
+            decimal CodigoOrigem
+            decimal CodigoSituacao
+            decimal? CodigoSegmento
+            decimal? CodigoCategoria
+            decimal? CodigoAtividade
+            decimal? CodigoAtivador
+            DateTime DataCadastro
+            decimal NumeroVersao
+            Guid CodigoAuditoria
+        }
+
+        class Localizacao {}
+        class Canal {}        
+        class Segmento {}
+        class Categoria {}
+        class Atividade{}
+        class Situacao {}
+        class Genero {}
+        class Ciclo {}
+        class Etapa {}
+        class Metodo {}
+        class Origem {}
+        class Tipo {}
+        class Atributo {}
+        class PessoaFisica {}
+        class PessoaJuridica {}
+        class Vinculo {}
+        class Relacao {}
+        class Evento {}
+        class Marca {}        
+    }
+
+    namespace Cadastros.Pessoa.Grpc {
+        class PessoaService {
+            <<interface>>
+           
+            GetPessoa(GetPessoaRequest) GetPessoaResponse
+            ListPessoa(ListPessoaRequest) ListPessoaResponse
+            AddSegmento(AddSegmentoRequest) AddSegmentoResponse
+            AddCategoria(AddCategoriaRequest) AddCategoriaResponse
+            AddCanal(AddCanalRequest) AddCanalResponse
+            AddEvento(AddEventoRequest) AddEventoResponse
+            UpdateOrigem(UpdateOrigemRequest) UpdateOrigemResponse
+            UpdateEtapa(UpdateEtapaRequest) UpdateEtapaResponse
+                        
+        }
+    }
+
+    namespace Cadastros.Localizacao.Grpc {
+        class LocalizacaoService {
+            <<interface>>
+
+            GetLocalizacao(GetLocalizacaoRequest) GetLocalizacaoResponse
+            ListLocalizacao(ListLocalizacaoRequest) ListLocalizacaoResponse
+        }
+    }
+
+    Localizacao ..> LocalizacaoService
+
+    Tipo --* Pessoa
+    Situacao --* Pessoa
+    Genero --* PessoaFisica
+    PessoaFisica --o Pessoa
+    PessoaJuridica --o Pessoa
+    Metodo --* Origem
+    Origem --* Pessoa
+    Ciclo --* Etapa
+    Etapa --* Pessoa
+    Relacao o-- Pessoa
+    Vinculo --* Relacao
+    Evento --o Pessoa
+    Marca --o Pessoa
+  
+    Pessoa --> PessoaService 
+    Pessoa o-- Localizacao
+    Pessoa o-- Atributo
+    Pessoa o-- Categoria
+    Pessoa o-- Atividade
+    Pessoa o-- Segmento
+    Pessoa o-- Canal
+
+
+    
+  
+
+    

@@ -1,0 +1,31 @@
+---
+  title: Localizacao Context Diagram
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR
+
+    namespace Cadastros.Localizacao {
+
+        class Parametro {}
+        class Arquivo {}
+        class Aplicacao {}
+        class Modulo {}
+        class Material {}
+        class MaterialModulo {}
+        class Encurtador {}
+        class Pergunta {}
+        class Depoimento {}
+        class Plataforma {}
+    }
+
+    namespace ModulosAuxiliares.Sistema.Grpc {
+        
+        class SistemaService {
+            <<interface>>
+        }
+    }
+
+    

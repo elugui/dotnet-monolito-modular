@@ -16,6 +16,7 @@ public class EstruturasModule : ISliceModule
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(EstruturasModule).Assembly));
 
         services.AddGrpc();
+        services.AddScoped<Grpc.EstruturasGrpcService>();
 
         // Exemplo: usando cliente gRPC de outro slice
         // services.AddGrpcClient<UsersService.UsersServiceClient>(options =>

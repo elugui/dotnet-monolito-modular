@@ -1,0 +1,144 @@
+---
+title: Bipper.Modulos.Cadastros.Estruturas
+config:
+    class:
+      hideEmptyMembersBox: true
+---
+
+classDiagram
+    
+    class Estrutura {
+        Guid Codigo
+        string Nome
+        decimal EstruturaTipoCodigo
+        string CodigoExterno
+        DateTime InicioVigencia
+        DateTime TerminoVigencia
+        int Versao
+        int Status
+    }
+
+    class EstruturaTipo {
+        decimal Codigo
+        string Nome        
+    }
+
+    class EstruturaStatus {
+        <<enumeration>>
+        Ativo = 1
+        Inativo = 2
+        Edicao = 3       
+    }
+
+    class Cargo {
+        decimal Codigo
+        string Nome
+    }
+
+    class EstruturaNivelStatus {
+        <<enumeration>>
+        Ativo = 1
+        Inativo = 2
+    }
+
+    class EstruturaNivel {
+        decimal Codigo
+        decimal EstruturaCodigo
+        string Nome
+        string CodigoExterno
+        string CorIdentificacao
+        decimal NivelSuperiorCodigo
+        int Versao
+        int Status
+    }
+
+    class EstruturaContato {
+        decimal Codigo
+        string Nome
+        string Cpf   
+        string Email
+        string Telefone     
+    }
+
+    class MembroEquipe {
+        decimal Codigo
+        decimal EstruturaNivelCodigo
+        decimal EstruturaContatoCodigo
+        decimal CargoCodigo
+    }
+
+    class EstruturaParametro {
+        decimal EstruturaCodigo
+        decimal EstruturaContatoCodigoResponsavel 
+    }
+
+    class EstruturaContatoAusencia {
+        decimal Codigo
+        decimal EstruturaContatoCodigo
+        decimal MotivoCodigo
+        string MotivoDescricao
+        DateTime DataInicio
+        DateTime DataTermino
+        decimal EstruturaContatoCodigoSubstituto
+        string Observacao
+    }
+
+    namespace Bipper.Modulos.Cadastros.Pessoas.Grpc {
+        class PessoaService {
+            <<interface>>
+
+            GetContato(GetContatoRequest) GetContatoResponse
+            ListContato(ListContatoRequest) ListContatoResponse
+            GetMotivoAusencia(GetMotivoAusenciaRequest) GetMotivoAusenciaResponse
+            ListMotivosAusencia(ListMotivosAusenciaRequest) ListMotivosAusenciaResponse
+            GetAusencia(GetAusenciaRequest) GetAusenciaResponse
+            ListAusencias(ListAusenciasRequest) ListAusenciasResponse
+            AddAusencia(AddAusenciaRequest) AddAusenciaResponse
+            UpdateAusencia(UpdateAusenciaRequest) UpdateAusenciaResponse
+            RemoveAusencia(RemoveAusenciaRequest) RemoveAusenciaResponse            
+        } 
+
+        class Contato {
+            decimal Codigo
+            string Nome
+            string Cpf   
+            string Email
+            String Telefone
+            ...
+        }
+
+        class MotivoAusencia {
+            decimal Codigo
+            string Descricao        
+        }
+
+        class Ausencia {
+            decimal Codigo
+            decimal ContatoCodigo
+            decimal MotivoCodigo
+            DateTime DataInicio
+            DateTime DataTermino
+            decimal ContatoCodigoSubstituto
+            string Observacao
+        }
+    }
+
+    Estrutura "0..*" --> "1" EstruturaTipo : possui
+    Estrutura "1" <-- "0..*" EstruturaNivel : pertence
+    EstruturaNivel "1" <-- "0..*" EstruturaNivel : nivelSuperior
+    EstruturaNivel "1" <-- "0..*" MembroEquipe : pertence
+    Cargo "1" <-- "0..*" MembroEquipe : ocupa
+    Estrutura "1" --> "1" EstruturaStatus : tem
+    EstruturaNivel "1" --> "1" EstruturaNivelStatus : tem
+    MembroEquipe ..> PessoaService : consome
+    EstruturaContato "1" <-- "0..*" MembroEquipe : é
+    Ausencia "0..*" --> "1" MotivoAusencia : define
+    Estrutura "1" <-- "1" EstruturaParametro : pertence
+    EstruturaContato "1" <-- "0..*" EstruturaParametro : responsável é
+    Estrutura ..>  PessoaService : consome
+    PessoaService ..> Ausencia : gerencia
+    PessoaService ..> Contato : consulta
+    Ausencia "0..*" --> "1" Contato :  é
+    Ausencia "0..*" --> "1" Contato : substituto é
+    EstruturaContato "1" <-- "0..*" EstruturaContatoAusencia : é  
+    EstruturaContato "1" <-- "0..*" EstruturaContatoAusencia : substituto é

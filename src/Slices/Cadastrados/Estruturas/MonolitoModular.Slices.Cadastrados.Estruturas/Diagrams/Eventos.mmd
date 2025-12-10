@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant Pessoas as Módulo Pessoas
+    participant RabbitMQ as Broker de Eventos
+    participant Estruturas as Módulo Estruturas
+
+    Pessoas->>RabbitMQ: Publica evento ContatoCriado/Atualizado/Excluido
+    Estruturas-->>RabbitMQ: Consome evento ContatoCriado/Atualizado/Excluido
+    Estruturas->>Estruturas: Atualiza tabela de contatos
+
+    Pessoas->>RabbitMQ: Publica evento AusenciaCriada/Atualizada/Excluida
+    Estruturas-->>RabbitMQ: Consome evento AusenciaCriada/Atualizada/Excluida
+    Estruturas->>Estruturas: Atualiza tabela de ausências
+
+    Note over Pessoas,RabbitMQ: Eventos devem ser versionados e conter dados mínimos para idempotência
+    Note over Estruturas: Implementar dead-letter, retry e logging para garantir resiliência
+    Note over RabbitMQ: Utilizar tópicos separados para cada tipo de evento e garantir ordenação quando necessário

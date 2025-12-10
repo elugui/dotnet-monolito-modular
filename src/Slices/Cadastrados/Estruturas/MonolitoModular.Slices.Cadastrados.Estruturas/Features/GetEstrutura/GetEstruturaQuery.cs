@@ -1,22 +1,11 @@
+using System;
 using MediatR;
 using MonolitoModular.Slices.Cadastrados.Estruturas.Domain;
-using MonolitoModular.Slices.Cadastrados.Estruturas.Infrastructure;
 
-namespace MonolitoModular.Slices.Cadastrados.Estruturas.Features.GetEstrutura;
-
-public record GetEstruturaQuery(Guid Id) : IRequest<Estrutura?>;
-
-public class GetEstruturaQueryHandler : IRequestHandler<GetEstruturaQuery, Estrutura?>
+namespace MonolitoModular.Slices.Cadastrados.Estruturas.Features.GetEstrutura
 {
-    private readonly EstruturasDbContext _context;
-
-    public GetEstruturaQueryHandler(EstruturasDbContext context)
+    public class GetEstruturaQuery : IRequest<Estrutura>
     {
-        _context = context;
-    }
-
-    public async Task<Estrutura?> Handle(GetEstruturaQuery request, CancellationToken cancellationToken)
-    {
-        return await _context.Estruturas.FindAsync(new object[] { request.Id }, cancellationToken);
+        public Guid Codigo { get; set; }
     }
 }

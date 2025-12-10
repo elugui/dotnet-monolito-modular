@@ -1,0 +1,42 @@
+---
+title: Pessoa Context Diagram
+config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR
+
+    namespace Cadastros.Pessoas {
+
+        class Pessoa {}
+        class Localizacao {}
+    }
+
+    namespace Cadastros.Pessoa.Grpc {
+        class PessoaService {
+            <<interface>>
+           
+            GetPessoa(GetPessoaRequest) GetPessoaResponse
+            ListPessoa(ListPessoaRequest) ListPessoaResponse
+            AddSegmento(AddSegmentoRequest) AddSegmentoResponse
+            AddCategoria(AddCategoriaRequest) AddCategoriaResponse
+            AddCanal(AddCanalRequest) AddCanalResponse
+            AddEvento(AddEventoRequest) AddEventoResponse
+            UpdateOrigem(UpdateOrigemRequest) UpdateOrigemResponse
+            UpdateEtapa(UpdateEtapaRequest) UpdateEtapaResponse
+                        
+        }
+    }
+
+    namespace Cadastros.Localizacao.Grpc {
+        class LocalizacaoService {
+            <<interface>>
+
+            GetLocalizacao(GetLocalizacaoRequest) GetLocalizacaoResponse
+            ListLocalizacao(ListLocalizacaoRequest) ListLocalizacaoResponse
+        }
+    }
+
+    Localizacao ..> LocalizacaoService
+    Pessoa --> PessoaService 

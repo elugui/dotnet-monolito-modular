@@ -1,0 +1,38 @@
+---
+title: Localizacao Context Diagram
+config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR
+
+    namespace Cadastros.Localizacao {
+
+        class Dimensao {}
+        class Regiao {}
+        class Estado {}
+        class Discagem {}
+        class Cidade {}
+        class Endereco {}
+        class Localizacao {}
+    }
+
+    namespace Cadastros.Localizacao.Grpc {
+        
+        class LocalizacaoService {
+            <<interface>>
+
+            GetLocalizacao(GetLocalizacaoRequest) GetLocalizacaoResponse
+            ListLocalizacao(ListLocalizacaoRequest) ListLocalizacaoResponse
+        }
+    }
+
+    Localizacao --> LocalizacaoService
+    Cidade --* Localizacao
+    
+    Estado --* Cidade
+    Regiao --* Cidade
+    Discagem --* Cidade
+    Dimensao --* Regiao
+    Endereco *-- Cidade

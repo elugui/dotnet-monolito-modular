@@ -250,6 +250,37 @@ kanban
     Done
 ```
 
+## Dicas tem caso de falha na execução do projeto
+
+### Erro no gerenciador de pacotes 
+
+Acesse a pasta abaixo?
+
+```
+%APPDATA%\NuGet
+```
+
+Abra o arquivo NuGet.config e edit ou comente a linha que refere-se ao gerenciador de pacote que está acusando erro.
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+    <!-- <add key="Telerik" value="https://nuget.telerik.com/v3/index.json" /> -->
+    <add key="Microsoft Visual Studio Offline Packages" value="C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\" />
+  </packageSources>
+  <packageRestore>
+    <add key="enabled" value="True" />
+  </packageRestore>
+  <bindingRedirects>
+    <add key="skip" value="False" />
+  </bindingRedirects>
+  <packageManagement>
+    <add key="disabled" value="False" />
+  </packageManagement>
+</configuration>
+```
 
 ## 📝 License
 
