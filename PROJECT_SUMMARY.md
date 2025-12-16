@@ -129,20 +129,57 @@ MonolitoModular/
 │       │       ├── UsersModule.cs
 │       │       ├── GlobalUsings.cs
 │       │       └── MonolitoModular.Slices.Users.csproj
-│       │
+│       
+│       ├── Cadastrados/
+│       │   └── Estruturas/
+│       │       └── MonolitoModular.Slices.Cadastrados.Estruturas/
+│       │           ├── Api/
+│       │           │   └── EstruturaController.cs
+│       │           ├── Domain/
+│       │           │   ├── Estrutura.cs
+│       │           │   └── EstruturaStatus.cs
+│       │           ├── Infrastructure/
+│       │           │   └── EstruturasDbContext.cs
+│       │           ├── Features/
+│       │           │   ├── CreateEstrutura/CreateEstruturaCommand.cs
+│       │           │   ├── CreateEstrutura/CreateEstruturaHandler.cs
+│       │           │   ├── UpdateEstrutura/UpdateEstruturaCommand.cs
+│       │           │   ├── UpdateEstrutura/UpdateEstruturaHandler.cs
+│       │           │   ├── DeleteEstrutura/DeleteEstruturaCommand.cs
+│       │           │   ├── DeleteEstrutura/DeleteEstruturaHandler.cs
+│       │           │   ├── GetEstrutura/GetEstruturaQuery.cs
+│       │           │   ├── GetEstrutura/GetEstruturaHandler.cs
+│       │           │   ├── ListEstruturas/ListEstruturasQuery.cs
+│       │           │   └── ListEstruturas/ListEstruturasHandler.cs
+│       │           ├── Grpc/
+│       │           │   └── EstruturasGrpcService.cs
+│       │           ├── Protos/
+│       │           │   └── estruturas.proto
+│       │           ├── Migrations/
+│       │           │   ├── 20251212204610_InitialCreate.cs
+│       │           │   ├── 20251212204610_InitialCreate.Designer.cs
+│       │           │   └── EstruturasDbContextModelSnapshot.cs
+│       │           ├── Diagrams/
+│       │           │   ├── Domain.mmd
+│       │           │   ├── Eventos.mmd
+│       │           │   └── estrutura_cadastro.png
+│       │           ├── EstruturasModule.cs
+│       │           ├── GlobalUsings.cs
+│       │           └── MonolitoModular.Slices.Cadastrados.Estruturas.csproj
+│       
 │       └── Products/
 │           └── MonolitoModular.Slices.Products/
-│               ├── Domain/
-│               │   └── Product.cs
-│               ├── Infrastructure/
-│               │   └── ProductsDbContext.cs
-│               ├── Features/
-│               │   ├── CreateProduct/CreateProductCommand.cs
-│               │   ├── GetProduct/GetProductQuery.cs
-│               │   └── ListProducts/ListProductsQuery.cs
-│               ├── ProductsModule.cs
-│               ├── GlobalUsings.cs
-│               └── MonolitoModular.Slices.Products.csproj
+               ├── Domain/
+               │   └── Product.cs
+               ├── Infrastructure/
+               │   └── ProductsDbContext.cs
+               ├── Features/
+               │   ├── CreateProduct/CreateProductCommand.cs
+               │   ├── GetProduct/GetProductQuery.cs
+               │   └── ListProducts/ListProductsQuery.cs
+               ├── ProductsModule.cs
+               ├── GlobalUsings.cs
+               └── MonolitoModular.Slices.Products.csproj
 │
 ├── docs/
 │   ├── ARCHITECTURE.md
@@ -238,6 +275,8 @@ dotnet tool install --global dotnet-ef
 dotnet ef migrations add InitialCreate --project src/Slices/Users/MonolitoModular.Slices.Users/MonolitoModular.Slices.Users.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context UsersDbContext --output-dir Migrations
 
 dotnet ef migrations add InitialCreate --project src/Slices/Products/MonolitoModular.Slices.Products/MonolitoModular.Slices.Products.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context ProductsDbContext --output-dir Migrations 
+
+dotnet ef migrations add InitialCreate --project src/Slices/Cadastrados/Estruturas/MonolitoModular.Slices.Cadastrados.Estruturas/MonolitoModular.Slices.Cadastrados.Estruturas.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context MonolitoModular.Slices.Cadastrados.Estruturas.Infrastructure.EstruturasDbContext --output-dir Migrations
 ```
 
 - Aplicar migrations:

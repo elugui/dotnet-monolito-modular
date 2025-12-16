@@ -6,6 +6,7 @@ using MonolitoModular.Slices.Products.Grpc;
 using MonolitoModular.Slices.Cadastrados.Estruturas.Grpc;
 using Scalar.AspNetCore;
 using Microsoft.OpenApi;
+using MonolitoModular.Slices.Cadastrados.Estruturas;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,7 +61,8 @@ builder.Services.AddOpenApi("v1", options =>
 var sliceModules = new ISliceModule[]
 {
     new UsersModule(),
-    new ProductsModule()
+    new ProductsModule(),
+    new EstruturasModule()
 };
 
 foreach (var module in sliceModules)
