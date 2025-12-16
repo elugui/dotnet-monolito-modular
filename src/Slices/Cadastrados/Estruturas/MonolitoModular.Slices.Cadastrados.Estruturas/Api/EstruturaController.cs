@@ -28,8 +28,8 @@ public class EstruturasController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateEstruturaCommand command)
     {
-        var id = await _mediator.Send(command);
-        return CreatedAtAction(nameof(GetById), new { id }, new { id });
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 
 

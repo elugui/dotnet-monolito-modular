@@ -1,5 +1,6 @@
 using MediatR;
 using MonolitoModular.Slices.Cadastrados.Estruturas.Domain;
+using MonolitoModular.Slices.Cadastrados.Estruturas.Infrastructure;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +9,12 @@ namespace MonolitoModular.Slices.Cadastrados.Estruturas.Features.CreateEstrutura
 {
     public class CreateEstruturaHandler : IRequestHandler<CreateEstruturaCommand, Guid>
     {
-        // TODO: Inject DbContext via constructor
+        private EstruturasDbContext _contexto;
+
+        public CreateEstruturaHandler(EstruturasDbContext contexto)
+        {
+            _contexto = contexto;
+        }
 
         public async Task<Guid> Handle(CreateEstruturaCommand request, CancellationToken cancellationToken)
         {
@@ -35,8 +41,8 @@ namespace MonolitoModular.Slices.Cadastrados.Estruturas.Features.CreateEstrutura
                 Status = (EstruturaStatus)request.Status
             };
 
-            // Exemplo: dbContext.Estruturas.Add(estrutura); await dbContext.SaveChangesAsync();
-            await Task.CompletedTask;
+            _contexto.Estruturas.Add(estrutura); 
+            await _contexto.SaveChangesAsync(cancellationToken);
             return estrutura.Codigo;
         }
     }

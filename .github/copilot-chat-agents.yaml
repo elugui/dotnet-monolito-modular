@@ -1,6 +1,8 @@
 agents:
   - name: Backend_NET_Slice_Architect
     description: Especialista em backend .NET (Minimal API + Slice Architecture) para monólitos modulares REST/JSON com gRPC interno.
+    notes:
+      - "Nunca criar controllers fora de um slice; controllers devem ser implementados apenas dentro do slice (pasta Api/) ou no Host quando delegam ao slice."
     target: vscode
     tools: []
     commands:

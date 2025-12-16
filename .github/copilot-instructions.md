@@ -1,56 +1,66 @@
 
 
-# Copilot Instructions for dotnet-monolito-modular
+ # Instruções do Copilot para dotnet-monolito-modular
 
-## 🏗️ Arquitetura Modular
-- Projeto .NET com **Slice Architecture**: cada slice é um módulo vertical autossuficiente (API, domínio, persistência, gRPC).
-- Slices ficam em `src/Slices/{ContextoMacro}/{SliceName}/MonolitoModular.Slices.{ContextoMacro}.{SliceName}/`.
-- Estrutura típica de slice:
-  - `Domain/`: entidades e lógica de negócio
-  - `Infrastructure/`: DbContext, persistência, schema isolado (`HasDefaultSchema` obrigatório)
-  - `Features/`: casos de uso CQRS (Commands/Queries via MediatR)
-  - `Grpc/`: serviços gRPC internos
-  - `Protos/`: contratos gRPC
-  - `GlobalUsings.cs` e `{Slice}Module.cs`: registro de serviços e usings globais
-- **Slices nunca se referenciam diretamente**: comunicação entre slices é sempre via gRPC client (veja exemplos em `docs/GRPC_USAGE_GUIDE.md`).
-- Shared Kernel/Building Blocks: apenas para contratos/utilitários comuns (`src/Shared/Contracts`, `src/Shared/Infrastructure`).
+Guia rápido, objetivo e prático para deixar agentes de IA produtivos neste repositório.
 
-## 🛠️ Workflows Essenciais
-- **Build:** `dotnet build` ou `dotnet build --configuration Release`
-- **Testes:** `dotnet test`
-- **Rodar local:** `dotnet run --project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj`
-- **Docker:** `docker-compose up --build` (usa SQL Server e API)
-- **Migrations:**
-  - Exemplo: `dotnet ef database update --project src/Slices/Users/MonolitoModular.Slices.Users/MonolitoModular.Slices.Users.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context UsersDbContext`
-- **Adicionar novo slice:**
-  1. Crie a estrutura de pastas e projeto classlib
-  2. Adicione referências aos Shared
-  3. Implemente Domain, Infrastructure, Features, Grpc
-  4. Registre o módulo no Host
-  5. Siga exemplos em `docs/ADDING_NEW_SLICE.md`
+## 🏗️ Visão geral da arquitetura
+- Projeto .NET 9 **Modular Monolith** com padrão de "vertical slices". Cada slice é um módulo vertical independente com superfície API, modelo de domínio, persistência (EF DbContext) e interface gRPC.
+- Layout dos slices: `src/Slices/{Context}/{Slice}/MonolitoModular.Slices.{Context}.{Slice}/`.
+- Pastas típicas em um slice:
+  - `Domain/` — entidades e tipos de domínio
+  - `Infrastructure/` — `DbContext`, repositórios e configurações (use `HasDefaultSchema` para isolar schema)
+  - `Features/` — implementação CQRS: `Commands`, `Queries`, `Handlers` (MediatR)
+  - `Grpc/` — implementação do serviço gRPC do slice
+  - `Protos/` — arquivos `.proto` (compilam para tipos gerados)
+  - `Api/` (opcional) — controllers específicos do slice (normalmente controllers ficam no `Host`)
+  - `{Slice}Module.cs` e `GlobalUsings.cs` — registro de DI e usings globais
 
-## 🧩 Padrões e Convenções
-- **CQRS:** Commands/Queries em subpastas de `Features/`, handlers usam MediatR.
-- **DbContext:** Cada slice tem seu próprio contexto e schema.
-- **gRPC:**
-  - Contratos em `Protos/`, serviços em `Grpc/`
-  - Comunicação entre slices sempre via gRPC client (nunca referência direta)
-  - Siga `docs/ADDING_GRPC_SERVICE.md` para padrões de proto, versionamento e DTOs
-- **Controllers REST:** Ficam no Host, delegam para MediatR.
-- **GlobalUsings:** Cada slice tem seu próprio arquivo, importando apenas o necessário.
-- **Testes:** Cada slice pode ter testes unitários e de integração em `tests/`
-- **Scripts:** Automação em `ia-scripts/` (ex: criar-slice-estruturas.ps1)
+## ✅ Convenções e padrões importantes (específicos do projeto)
+- Validação: handlers fazem validação de entrada e lançam `ArgumentException` para dados inválidos.
+- Entidade não encontrada: handlers lançam `InvalidOperationException("X não encontrada.")` (há exemplos reais; siga esse padrão).
+- Acesso ao banco: injete o `DbContext` do slice no construtor do handler e use `FindAsync(new object[] { key }, cancellationToken)` para recuperar por chave.
+- Organização: Commands/Queries ficam em `Features/{FeatureName}/` com `XCommand.cs` e `XHandler.cs`.
+- Comunicação entre slices: **não** usar referências diretas entre projetos; use gRPC clients (veja `docs/GRPC_USAGE_GUIDE.md`).
+- Schema por slice: cada DbContext deve usar schema próprio (ex.: `HasDefaultSchema("Estruturas")`).
 
-## 🔗 Exemplos e Referências
-- Exemplos completos: `src/Slices/Users/`, `src/Slices/Products/`, `src/Slices/Cadastrados/Estruturas/`
-- Adição de slices: `docs/ADDING_NEW_SLICE.md`
-- Padrões gRPC: `docs/ADDING_GRPC_SERVICE.md`, `docs/GRPC_USAGE_GUIDE.md`, `docs/GRPC_ANALYSIS.md`, `docs/GRPC_IMPLEMENTATION_SUMMARY.md`
-- Arquitetura detalhada: `docs/ARCHITECTURE.md`
-- Documentação endpoints: `docs/ENDPOINTS_ESTRUTURA.md`
+## 🔧 Como adicionar um novo slice (checklist rápido)
+1. Criar o projeto classlib em `src/Slices/{Context}/{Slice}/` e seguir a estrutura de exemplo.
+2. Adicionar `GlobalUsings.cs` e `{Slice}Module.cs` implementando `ISliceModule` e `RegisterServices(IServiceCollection, IConfiguration)`.
+3. Adicionar o projeto à solução e um `<ProjectReference />` no `src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj`.
+4. Registrar o módulo em `Program.cs` adicionando `new {Slice}Module()` ao array `sliceModules` e chamar `module.RegisterServices(...)`.
+5. Criar migrations EF e aplicar: `dotnet ef migrations add <Name> --project <slice.csproj> --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context <SliceDbContext> --output-dir Migrations`.
+6. Aplicar migrations: `dotnet ef database update --project <slice.csproj> --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context <SliceDbContext>`.
+7. Adicionar testes: unitários para handlers e testes de integração usando `WebApplicationFactory<Program>` para gRPC/HTTP.
+8. Atualizar documentação: `docs/ADDING_NEW_SLICE.md`, `PROJECT_SUMMARY.md`, e `docs/ENDPOINTS_ESTRUTURA.md` quando necessário.
 
-## ⚠️ Atenção
-- Nunca crie dependências cruzadas entre slices.
-- Sempre use gRPC para comunicação inter-slice.
-- Mantenha cada slice isolado, testável e com schema próprio.
-- Atualize a documentação ao criar novos slices ou serviços.
-- Siga exemplos reais dos slices existentes para novos desenvolvimentos.
+## 🛠️ Fluxos de desenvolvimento (PowerShell)
+- Build: `dotnet build` ou `dotnet build --configuration Release`
+- Rodar host localmente (Kestrel configurado em `Program.cs`):
+  - `dotnet run --project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj`
+- Testes: `dotnet test` ou `dotnet test tests/MonolitoModular.Slices.Cadastrados.Estruturas.Tests`
+- Docker: `docker-compose up --build` (inclui SQL Server configurado no `docker-compose.yml`).
+- Exemplos EF (usar `--startup-project` apontando para o Host):
+  - Adicionar migration: `dotnet ef migrations add InitialCreate --project src/Slices/Users/MonolitoModular.Slices.Users/MonolitoModular.Slices.Users.csproj --startup-project src/Host/MonolitoModular.Host/MonolitoModular.Host.csproj --context UsersDbContext --output-dir Migrations`
+  - Gerar script idempotente: `dotnet ef migrations script --project <slice.csproj> --startup-project src/Host/... --context <SliceDbContext> --idempotent -o Scripts/Initial.sql`
+
+## 🔁 gRPC e testes de integração
+- gRPC são mapeados em `Program.cs` via `app.MapGrpcService<...>()` (ex.: `EstruturasGrpcService`).
+- Kestrel é configurado para HTTP/1.1 e HTTP/2 — ver portas em `Program.cs` (HTTP/2 normalmente em 5000 no projeto).
+- Testes unitários de gRPC usam TestServer; testes de integração podem usar `WebApplicationFactory<Program>` para rodar serviços reais.
+
+## 🔎 Locais úteis (exemplos práticos)
+- Módulo (exemplo): `src/Slices/Cadastrados/Estruturas/MonolitoModular.Slices.Cadastrados.Estruturas/EstruturasModule.cs`
+- Controller: `src/Slices/Cadastrados/Estruturas/.../Api/EstruturaController.cs` (ou controllers no `Host` que delegam a MediatR)
+- Handlers: `src/Slices/Cadastrados/Estruturas/.../Features/CreateEstrutura/CreateEstruturaHandler.cs`, `UpdateEstruturaHandler.cs` (veja validações e uso do DbContext)
+- gRPC e proto: `src/Slices/Cadastrados/Estruturas/.../Grpc/EstruturasGrpcService.cs`, `Protos/estruturas.proto`
+
+## ⚠️ Boas práticas e restrições
+- NÃO crie referências de projeto cruzadas entre slices — utilize gRPC.
+- NÃO altere convenções existentes (ex.: tipo de exceção para validação/nao-encontrado) sem uma boa razão.
+- Atualize documentação sempre que adicionar um slice ou endpoints.
+
+---
+Se quiser, posso adicionar um **modelo (template)** de slice ou um **snippet de teste** na mesma documentação — quer que eu inclua um exemplo?
+---
+If any section is unclear or you want more examples (e.g., a template for a new slice or a sample handler test), tell me which part and I'll add a focused snippet.
